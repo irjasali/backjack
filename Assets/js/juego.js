@@ -141,7 +141,7 @@ btnDetener.addEventListener("click", () => {
 
 btnNuevoJuego.addEventListener("click", () => {
   barajarDeck();
-  // console.clear();
+  console.clear();
   puntosJugador = 0;
   puntosComputadora = 0;
   deck = [];
