@@ -4,6 +4,11 @@ html, body {
     color: #fff;
 
 }
+h1 {
+    font-size: 21px;
+    padding: 10px 10px;
+
+}
 .titulo{
     text-align: center;
     background-color: black;
@@ -21,5 +26,13 @@ html, body {
 }
 #computadora-cartas, #jugador-cartas {
     height: 220px;
+
+}
+.carta_barajeada {
+    position: relative;
+    width: 150px;
+    left: 100px;
+    margin-left: 0;
+  
 
 }

@@ -1,17 +1,11 @@
-/*
-  - 2C = Dos de Treboles
-  - 2D = Dos de Diamantes
-  - 2H = Dos de Corazones
-  - 2S = Dos de Espadas
-*/
 let deck = [];
 const tipos = ["C", "D", "H", "S"];
 const cartasEspeciales = ["A", "J", "Q", "K"];
 let puntosJugador = 0,
   puntosComputadora = 0;
-let jugador;
+let jugador = "Jugador";
 
-// Referencias del HRML
+// Referencias del HTML
 const btnPedirCarta = document.querySelector("#btnPedirCarta");
 const btnDetener = document.querySelector("#btnDetener");
 const puntosHtml = document.querySelectorAll("small");
@@ -22,14 +16,35 @@ const nombreJugadorPantalla = document.getElementById("nombreJugadorPantalla");
 
 /* Creación de la función para crear deck */
 
+const barajarDeck = () => {
+  crearDeck();
+  jugador = prompt("Nombre:", "Jugador");
+  if (jugador === null) {
+    jugador = "Jugador";
+  }
+  nombreJugadorPantalla.innerText = jugador + " - Puntos: " + puntosJugador;
+
+  // Pregunta al Profesor
+  // setTimeout(() => {
+  //   for (let i = 0; i<= deck.length-1; i++) {
+
+  //     const imgCarta = document.createElement("img");
+  //     imgCarta.src = `Assets/cartas/${deck[i]}.png`;
+  //     imgCarta.classList.add("carta_barajeada");
+  //     divCartasComputadora.append(imgCarta);
+  //     console.log(imgCarta)
+  //   }
+
+  // }, 500);
+};
+
 const crearDeck = () => {
-  /* 
-       Creando los elementos del arreglo 
-       Las cartas van del número 2 al 10, más  las cartas especiales   
+  /*
+       Creando los elementos del arreglo
+       Las cartas van del número 2 al 10, más  las cartas especiales
 
     */
 
-  jugador = prompt("Nombre:","Jugador");
   for (let i = 2; i <= 10; i++) {
     for (const tipo of tipos) {
       deck.push(i + tipo);
@@ -43,13 +58,9 @@ const crearDeck = () => {
   /* Desordenando las cartas con la libreria Underscore, con la función _.shuffle*/
   deck = _.shuffle(deck);
   console.log(deck);
-  nombreJugadorPantalla.innerHTML = jugador + " - Puntos: " + puntosJugador;
-  divCartasJugador.innerHTML = `<img class="carta" src="Assets/cartas/grey_back.png">`;
-  divCartasComputadora.innerHTML = `<img class="carta" src="Assets/cartas/grey_back.png">`;
+
   return deck;
 };
-
-crearDeck();
 
 /* Función que me permite tomar  una carta */
 
@@ -58,7 +69,6 @@ const pedirCarta = () => {
     throw "No hay cartas en el Deck";
   }
   const carta = deck.pop();
-
   return carta;
 };
 
@@ -83,26 +93,24 @@ const turnoComputadora = (puntosMinimos) => {
       break;
     }
   } while (puntosComputadora < puntosMinimos && puntosMinimos <= 21);
+
   setTimeout(() => {
     if (puntosComputadora === puntosMinimos) {
       alert("Nadie Gana");
     } else if (puntosMinimos > 21) {
-      alert("Computadora Gana");
+      alert("*** La Computadora Gana - Suerte para la próxima ***");
     } else if (puntosComputadora > 21) {
-      alert("Jugador Gana");
+      alert("! Felicidades " + jugador + " Ganaste !");
     } else {
-      alert("Computadora Gana--");
+      alert("Computadora Gana");
     }
   }, 500);
+  btnBarajar.disabled = false;
 };
-
-// const valor = valorCarta(pedirCarta());
-// console.log(valor);
 
 // Eventos
 
 btnPedirCarta.addEventListener("click", () => {
-  //
   const carta = pedirCarta();
   puntosJugador += valorCarta(carta);
   puntosHtml[0].innerText = puntosJugador;
@@ -110,7 +118,8 @@ btnPedirCarta.addEventListener("click", () => {
   imgCarta.src = `Assets/cartas/${carta}.png`;
   imgCarta.classList.add("carta");
   divCartasJugador.append(imgCarta);
-  nombreJugadorPantalla.innerHTML = jugador + " -  Puntos: " + puntosJugador;
+  nombreJugadorPantalla.innerHTML = jugador + " - Puntos: " + puntosJugador;
+
   if (puntosJugador > 21) {
     console.warn("Perdiste");
     btnPedirCarta.disabled = true;
@@ -131,17 +140,33 @@ btnDetener.addEventListener("click", () => {
 });
 
 btnNuevoJuego.addEventListener("click", () => {
-  console.clear();
+  barajarDeck();
+  // console.clear();
   puntosJugador = 0;
   puntosComputadora = 0;
   deck = [];
   deck = crearDeck();
   btnDetener.disabled = false;
   btnPedirCarta.disabled = false;
+  btnBarajar.disabled = true;
   puntosHtml[0].innerText = 0;
   puntosHtml[1].innerText = 0;
-
-  nombreJugadorPantalla.innerHTML = jugador + " " + puntosJugador;
+  nombreJugadorPantalla.innerText = jugador + " - Puntos: " + puntosJugador;
   divCartasJugador.innerHTML = `<img class="carta" src="Assets/cartas/red_back.png">`;
   divCartasComputadora.innerHTML = `<img class="carta" src="Assets/cartas/red_back.png">`;
+});
+
+btnBarajar.addEventListener("click", () => {
+  puntosJugador = 0;
+  puntosComputadora = 0;
+  deck = [];
+  deck = crearDeck();
+  btnDetener.disabled = false;
+  btnPedirCarta.disabled = false;
+  btnBarajar.disabled = true;
+  puntosHtml[0].innerText = 0;
+  puntosHtml[1].innerText = 0;
+  nombreJugadorPantalla.innerText = jugador + " - Puntos: " + puntosJugador;
+  divCartasJugador.innerHTML = `<img class="carta" src="Assets/cartas/grey_back.png">`;
+  divCartasComputadora.innerHTML = `<img class="carta" src="Assets/cartas/grey_back.png">`;
 });
