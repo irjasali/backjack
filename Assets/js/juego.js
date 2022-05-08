@@ -15,6 +15,8 @@ const btnNuevoJuego = document.querySelector("#btnNuevoJuego");
 const nombreJugadorPantalla = document.getElementById("nombreJugadorPantalla");
 
 /* Creación de la función para crear deck */
+btnDetener.disabled = true;
+btnPedirCarta.disabled = true;
 
 const barajarDeck = () => {
   crearDeck();
@@ -66,7 +68,9 @@ const crearDeck = () => {
 
 const pedirCarta = () => {
   if (deck.length === 0) {
-    throw "No hay cartas en el Deck";
+    alert("No hay cartas en el Mazo");
+    throw "No hay cartas en el Mazo";
+   
   }
   const carta = deck.pop();
   return carta;
